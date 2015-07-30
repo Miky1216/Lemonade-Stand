@@ -20,16 +20,37 @@ class Participants:
 
 class UserInput:
     def GetUserName(self):
-        UserName = raw_input("Enter your game name: ")
-        return UserName
+        UserName = ""
+        while UserName is "":
+            UserName = raw_input("Enter your player name: ")
+    def HowMuchToChargePerCup(self):
+        PricePerCup = raw_input("How much do you want to charge per cup of lemonade?")
+        return PricePerCup
 
 class InitialCalculations:
     def ChangeInForecast(self):
-        pass
+        ForecastGenerator = random.randint(1,3)
+        if ForecastGenerator == 3:
+            print "The forecast is sunny"
+        if ForecastGenerator == 2:
+            print "The forecast is cloudy"
+        if ForecastGenerator == 1:
+            print "The forecast is rainy"
     def ChangeInOutsideTemp(self):
-        pass
+        TemperatureGenerator = random.randint(60,95)
+        print "with a temperature of " + str(TemperatureGenerator) + " degrees Fahrenheit"
     def CalculatePitcherCupPrice(self):
-        pass
+        PriceOfOneLemon = random.uniform(0.10, 0.50)
+        print "One Lemon costs $" + str(round(PriceOfOneLemon,2))
+        PriceOfFivePoundBagOfSugar = random.randint(2,3)
+        print "A five pound bag of sugar costs $" + str(PriceOfFivePoundBagOfSugar)
+        PriceOfOneHundredCups = random.randint(3,5)
+        print "A bag of 100 cups costs $" + str(PriceOfOneHundredCups)
+        #Cost of one pitcher, Pitcher makes 10 cups
+        CostToMakePitcher = (PriceOfOneLemon * 5) + (PriceOfFivePoundBagOfSugar / 4) + (PriceOfOneHundredCups / 10)
+        print "Cost to make one pitcher of lemonade is $" + str(round(CostToMakePitcher,2))
+        print "Cost to make one cup of lemonade is $" + str(round((CostToMakePitcher / 10), 2))
+        return CostToMakePitcher
 
 class ProfitCalculations:
     def CalculateProfit(self):
