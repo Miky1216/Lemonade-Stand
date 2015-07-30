@@ -55,16 +55,28 @@ class InitialCalculations:
 class ProfitCalculations:
     def CalculateProfit(self):
         pass
+        GainLossCalc = 
     def ShowProfitLoss(self):
         pass
 
 class GameLoop:
     def RunGame(self):
-        TimeCheck = TimeofDay()
-        if TimeCheck.CheckTimeOfDay() == 0:
-            print "Exiting: Program only accessible during daytime"
-            raise SystemExit
-            
+        PlayerName = UserInput()
+        PlayerName.GetUserName()
+        for DayCounter in range(0,6):
+            print "Day: " + str(DayCounter+1)
+            TimeCheck = TimeofDay()
+            if TimeCheck.CheckTimeOfDay() == 0:
+                print "Exiting: Program only accessible during daytime"
+                raise SystemExit
+            GenerateRandomForecast = InitialCalculations()
+            GenerateRandomForecast.ChangeInForecast()
+            GenerateTemperature = InitialCalculations()
+            GenerateTemperature.ChangeInOutsideTemp()
+            PitcherCupPriceGenerator = InitialCalculations()
+            PitcherCupPriceGenerator.CalculatePitcherCupPrice()
+            PlayerChargePerCup = UserInput()
+            PlayerChargePerCup.HowMuchToChargePerCup()
 if __name__ == "__main__":
     StartProgram = GameLoop()
     StartProgram.RunGame()
