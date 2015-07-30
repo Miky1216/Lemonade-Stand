@@ -3,14 +3,16 @@ import random
 class TimeofDay:
     def CheckTimeOfDay():
         pass
-class User:    
+class Participants:    
     def __init__(self, Participants):
         self.name
         self.demand
 
 class UserInput:
     def GetUserName():
-        pass
+        UserName = raw_input("Enter your game name: ")
+        return UserName
+
 class InitialCalculations:
     def ChangeInForecast():
         pass
