@@ -59,6 +59,15 @@ class ProfitCalculations:
     def ShowProfitLoss(self):
         pass
 
+class CheckHighScore:
+    def ReadFile(self):
+        file = open('highscore', 'r')
+        print file.read()
+        file.close()
+        file = open('highscore', 'w')
+        file.write('test')
+        file.close()
+        
 class GameLoop:
     def RunGame(self):
         PlayerName = UserInput()
