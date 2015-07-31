@@ -83,12 +83,15 @@ class ProfitCalculations:
         VariableList.CashOnHand = VariableList.CashOnHand + VariableList.DailyProfitGainLoss
         
 class CheckHighScore:
-    def ReadFile(self):
-        file = open('highscore', 'r')
+    def ReadHighScoreFile(self, VariableList):
+        file = open('highscore', 'w+')
         print file.read()
-        file.close()
-        file = open('highscore', 'w')
-        file.write('test')
+#        if VariableList.CashOnHand > file.read():
+#            file.close()
+#            file = open('highscore', 'w')
+        print "i am here"
+        file.write("AAAAAAAAA")
+        #file.write(VariableList.CashOnHand)
         file.close()
         
 class GameLoop:
@@ -113,7 +116,9 @@ class GameLoop:
             ProfitGainLossCalc = ProfitCalculations()
             ProfitGainLossCalc.CalculateProfit(VariableList)
             ProfitGainLossCalc.ShowProfitLoss(VariableList)
-        print "Game Over! Your profit from the week is $" + str(round(VariableList.CashOnHand,2))
+        print "Game Over! Your final score is $" + str(round(VariableList.CashOnHand,2))
+        HighScore = CheckHighScore()
+        HighScore.ReadHighScoreFile(VariableList)
 if __name__ == "__main__":
     StartProgram = GameLoop()
     StartProgram.RunGame()
