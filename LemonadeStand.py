@@ -24,8 +24,19 @@ class UserInput:
         while UserName is "":
             UserName = raw_input("Enter your player name: ")
     def HowMuchToChargePerCup(self):
-        PricePerCup = raw_input("How much do you want to charge per cup of lemonade?")
-        return PricePerCup
+        CheckForValidNumber = 0
+        FloatPricePerCup = 0
+        while CheckForValidNumber == 0:
+            PricePerCup = raw_input("How much do you want to charge per cup of lemonade?") 
+            try:
+                FloatPricePerCup = float(PricePerCup)
+            except:
+                print ""
+            if FloatPricePerCup >= 0.01 and FloatPricePerCup <= 1.00:
+                CheckForValidNumber = 1
+            else:
+                print "Error! Enter a number between $0.01 and $1.00"                
+        return FloatPricePerCup
 
 class InitialCalculations:
     def ChangeInForecast(self):
