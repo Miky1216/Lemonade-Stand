@@ -1,5 +1,7 @@
 import random
 import datetime
+import os
+import os.path
 
 class TimeofDay:
     def CheckTimeOfDay(self):
@@ -84,15 +86,23 @@ class ProfitCalculations:
         
 class CheckHighScore:
     def ReadHighScoreFile(self, VariableList):
-        file = open('highscore', 'w+')
-        print file.read()
-#        if VariableList.CashOnHand > file.read():
-#            file.close()
-#            file = open('highscore', 'w')
-        print "i am here"
-        file.write("AAAAAAAAA")
-        #file.write(VariableList.CashOnHand)
-        file.close()
+        PATH='./highscore'
+        if not os.path.isfile(PATH) or not os.access(PATH, os.R_OK):
+            file = open('highscore', 'w+')
+            file.close()
+        file = open('highscore', 'r')
+        ReadHighScore = file.read()
+        if ReadHighScore == "":
+            file.close()
+            file = open('highscore', 'w')
+            file.write(str(round(VariableList.CashOnHand,2)))
+            file.close()
+        else: 
+            if VariableList.CashOnHand > float(ReadHighScore):
+                file.close()
+                file = open('highscore', 'w')
+                file.write(str(round(VariableList.CashOnHand,2)))
+            file.close()
         
 class GameLoop:
     def RunGame(self):
