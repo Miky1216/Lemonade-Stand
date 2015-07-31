@@ -13,10 +13,15 @@ class TimeofDay:
         else:
             return 0
 
-class Participants:    
-    def __init__(self, Participants):
-        self.name
-        self.demand
+class GameData:    
+    def __init__(self):
+        self.ForecastGenerator = 0
+        self.TemperatureGenerator = 0
+        self.CostToMakePitcher = 0
+        self.CashOnHand = 10.0
+        self.Profit = 0
+        self.FloatPricePerCup = 0
+        self.ProfitGainLoss = 0
 
 class UserInput:
     def GetUserName(self):
@@ -47,29 +52,36 @@ class InitialCalculations:
             print "The forecast is cloudy"
         if ForecastGenerator == 1:
             print "The forecast is rainy"
+        return ForecastGenerator
     def ChangeInOutsideTemp(self):
-        TemperatureGenerator = random.randint(60,95)
+        TemperatureGenerator = random.randint(70,95)
         print "with a temperature of " + str(TemperatureGenerator) + " degrees Fahrenheit"
-    def CalculatePitcherCupPrice(self):
+        return TemperatureGenerator
+    def CalculatePitcherCupPrice(self, VariableList):
         PriceOfOneLemon = random.uniform(0.10, 0.50)
         print "One Lemon costs $" + str(round(PriceOfOneLemon,2))
-        PriceOfFivePoundBagOfSugar = random.randint(2,3)
-        print "A five pound bag of sugar costs $" + str(PriceOfFivePoundBagOfSugar)
-        PriceOfOneHundredCups = random.randint(3,5)
-        print "A bag of 100 cups costs $" + str(PriceOfOneHundredCups)
-        #Cost of one pitcher, Pitcher makes 10 cups
-        CostToMakePitcher = (PriceOfOneLemon * 5) + (PriceOfFivePoundBagOfSugar / 4) + (PriceOfOneHundredCups / 10)
-        print "Cost to make one pitcher of lemonade is $" + str(round(CostToMakePitcher,2))
-        print "Cost to make one cup of lemonade is $" + str(round((CostToMakePitcher / 10), 2))
-        return CostToMakePitcher
+        PriceOfFivePoundBagOfSugar = random.uniform(2.0,3.99)
+        print "A five pound bag of sugar costs $" + str(round(PriceOfFivePoundBagOfSugar,2))
+        PriceOfOneHundredCups = random.uniform(3.0,4.99)
+        print "A bag of 100 cups costs $" + str(round(PriceOfOneHundredCups,2))
+        VariableList.CostToMakePitcher = (PriceOfOneLemon * 5) + (PriceOfFivePoundBagOfSugar / 4) + (PriceOfOneHundredCups / 10)
+        print "Cost to make one pitcher of lemonade is $" + str(round(VariableList.CostToMakePitcher,2))
+        print "Cost to make one cup of lemonade is $" + str(round((VariableList.CostToMakePitcher / 10), 2))
+        print "Cash on hand is $" + str(round(VariableList.CashOnHand,2))
+        return VariableList
 
 class ProfitCalculations:
-    def CalculateProfit(self):
-        pass
-        GainLossCalc = 
-    def ShowProfitLoss(self):
-        pass
-
+    def CalculateProfit(self, VariableList):
+        #print "VariableList.ForecastGenerator " + str(VariableList.ForecastGenerator)
+        if VariableList.ForecastGenerator == 3:
+            VariableList.ForecastGenerator = 21
+        VariableList.Profit = (VariableList.TemperatureGenerator / 10) * (VariableList.ForecastGenerator) * (1.10 - VariableList.FloatPricePerCup) * (VariableList.FloatPricePerCup)
+        print "$" + str(VariableList.Profit)
+    def ShowProfitLoss(self, VariableList):
+        VariableList.DailyProfitGainLoss = VariableList.Profit - VariableList.CostToMakePitcher
+        print "Your daily gain or loss was $" + str(round(VariableList.DailyProfitGainLoss,2))
+        VariableList.CashOnHand = VariableList.CashOnHand + VariableList.DailyProfitGainLoss
+        
 class CheckHighScore:
     def ReadFile(self):
         file = open('highscore', 'r')
@@ -83,20 +95,25 @@ class GameLoop:
     def RunGame(self):
         PlayerName = UserInput()
         PlayerName.GetUserName()
-        for DayCounter in range(0,6):
+        VariableList = GameData()
+        for DayCounter in range(0,7):
             print "Day: " + str(DayCounter+1)
             TimeCheck = TimeofDay()
             if TimeCheck.CheckTimeOfDay() == 0:
                 print "Exiting: Program only accessible during daytime"
                 raise SystemExit
             GenerateRandomForecast = InitialCalculations()
-            GenerateRandomForecast.ChangeInForecast()
+            VariableList.ForecastGenerator = GenerateRandomForecast.ChangeInForecast()
             GenerateTemperature = InitialCalculations()
-            GenerateTemperature.ChangeInOutsideTemp()
+            VariableList.TemperatureGenerator = GenerateTemperature.ChangeInOutsideTemp()
             PitcherCupPriceGenerator = InitialCalculations()
-            PitcherCupPriceGenerator.CalculatePitcherCupPrice()
+            PitcherCupPriceGenerator.CalculatePitcherCupPrice(VariableList)
             PlayerChargePerCup = UserInput()
-            PlayerChargePerCup.HowMuchToChargePerCup()
+            VariableList.FloatPricePerCup = PlayerChargePerCup.HowMuchToChargePerCup()
+            ProfitGainLossCalc = ProfitCalculations()
+            ProfitGainLossCalc.CalculateProfit(VariableList)
+            ProfitGainLossCalc.ShowProfitLoss(VariableList)
+        print "Game Over! Your profit from the week is $" + str(round(VariableList.CashOnHand,2))
 if __name__ == "__main__":
     StartProgram = GameLoop()
     StartProgram.RunGame()
