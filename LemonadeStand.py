@@ -17,6 +17,7 @@ class TimeofDay:
 
 class GameData:    
     def __init__(self):
+        self.UserName = ""
         self.ForecastGenerator = 0
         self.TemperatureGenerator = 0
         self.CostToMakePitcher = 0
