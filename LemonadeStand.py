@@ -2,6 +2,7 @@ import random
 import datetime
 import os
 import os.path
+import webbrowser
 
 class TimeofDay:
     def CheckTimeOfDay(self):
@@ -31,6 +32,16 @@ class UserInput:
         UserName = ""
         while UserName is "":
             UserName = raw_input("Enter your player name: ")
+            if UserName == ("Mike"):
+				webbrowser.open("https://youtu.be/E-WHW-QNswE?t=25")
+            elif UserName == ("Terrill"):
+                webbrowser.open("https://youtu.be/E-WHW-QNswE?t=25")
+            elif UserName == ("Bravo"):
+                webbrowser.open("https://youtu.be/E-WHW-QNswE?t=25")
+            elif UserName == ("mike"):
+                webbrowser.open("https://youtu.be/E-WHW-QNswE?t=25")
+            else: 
+                continue
         return UserName
     def HowMuchToChargePerCup(self):
         CheckForValidNumber = 0
@@ -85,7 +96,13 @@ class ProfitCalculations:
         VariableList.DailyProfitGainLoss = VariableList.Profit - VariableList.CostToMakePitcher
         print "Your daily gain or loss was $" + str(round(VariableList.DailyProfitGainLoss,2))
         VariableList.CashOnHand = VariableList.CashOnHand + VariableList.DailyProfitGainLoss
-        
+    def EndGameBonus(self, VariableList):
+        if VariableList.CashOnHand >= 100:
+            webbrowser.open("https://youtu.be/GGXzlRoNtHU?t=6")
+        elif VariableList.CashOnHand <= 30:
+            webbrowser.open("https://youtu.be/S8u3NFEbjAs?t=7")
+        else:
+            raise SystemExit    
 class CheckHighScore:
     def ReadHighScoreFile(self, VariableList):
         PATH='./highscore'
@@ -135,16 +152,21 @@ class GameLoop:
             VariableList.ForecastGenerator = GenerateRandomForecast.ChangeInForecast()
             GenerateTemperature = InitialCalculations()
             VariableList.TemperatureGenerator = GenerateTemperature.ChangeInOutsideTemp()
-            PitcherCupPriceGenerator = InitialCalculations()
-            PitcherCupPriceGenerator.CalculatePitcherCupPrice(VariableList)
-            PlayerChargePerCup = UserInput()
-            VariableList.FloatPricePerCup = PlayerChargePerCup.HowMuchToChargePerCup()
-            ProfitGainLossCalc = ProfitCalculations()
-            ProfitGainLossCalc.CalculateProfit(VariableList)
-            ProfitGainLossCalc.ShowProfitLoss(VariableList)
+            if  VariableList.TemperatureGenerator >= 90 and VariableList.ForecastGenerator == 1:
+                print "Gahh! The humidity is brutal! Daily profit is $0!"
+                VariableList.DailyProfitGainLoss = 0
+            else:
+                PitcherCupPriceGenerator = InitialCalculations()
+                PitcherCupPriceGenerator.CalculatePitcherCupPrice(VariableList)
+                PlayerChargePerCup = UserInput()
+                VariableList.FloatPricePerCup = PlayerChargePerCup.HowMuchToChargePerCup()
+                ProfitGainLossCalc = ProfitCalculations()
+                ProfitGainLossCalc.CalculateProfit(VariableList)
+                ProfitGainLossCalc.ShowProfitLoss(VariableList)
         print "Game Over! Your final score is $" + str(round(VariableList.CashOnHand,2))
         HighScore = CheckHighScore()
         HighScore.ReadHighScoreFile(VariableList)
+        ProfitGainLossCalc.EndGameBonus(VariableList)
 if __name__ == "__main__":
     StartProgram = GameLoop()
     StartProgram.RunGame()
