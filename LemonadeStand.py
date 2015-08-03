@@ -31,6 +31,7 @@ class UserInput:
         UserName = ""
         while UserName is "":
             UserName = raw_input("Enter your player name: ")
+        return UserName
     def HowMuchToChargePerCup(self):
         CheckForValidNumber = 0
         FloatPricePerCup = 0
@@ -92,24 +93,38 @@ class CheckHighScore:
             file = open('highscore', 'w+')
             file.close()
         file = open('highscore', 'r')
-        ReadHighScore = file.read()
-        if ReadHighScore == "":
+        ReadFile = file.read()
+        if ReadFile == "":
             file.close()
             file = open('highscore', 'w')
-            file.write(str(round(VariableList.CashOnHand,2)))
+            FileWrite = str(round(VariableList.CashOnHand,2)) + "," + VariableList.UserName + ","
+            file.write(FileWrite)
+            for line in range(0,4):
+                file.write("00.00," + "     " + ",")
             file.close()
-        else: 
-            if VariableList.CashOnHand > float(ReadHighScore):
-                file.close()
-                file = open('highscore', 'w')
-                file.write(str(round(VariableList.CashOnHand,2)))
+        else:
+            FileList = ReadFile.split(",")
+            print "\nHigh Score    Name"
+            for item in range(0,5):
+                if VariableList.CashOnHand > float(FileList[item * 2]):
+                    HoldCOH = FileList[item * 2]
+                    HoldName = FileList[(item * 2) + 1]
+                    FileList[item * 2] = VariableList.CashOnHand
+                    FileList[(item * 2) + 1] = VariableList.UserName
+                    VariableList.CashOnHand = HoldCOH
+                    VariableList.UserName = HoldName
+                print "  " + str(round(float(FileList[item * 2]),2)) + "       " + FileList[(item * 2) + 1]
+            file.close()
+            file = open('highscore', 'w')
+            for item in range(0,5):
+                file.write(str(round(float(FileList[item * 2]),2)) + "," + FileList[(item * 2) + 1] + ",")
             file.close()
         
 class GameLoop:
     def RunGame(self):
         PlayerName = UserInput()
-        PlayerName.GetUserName()
         VariableList = GameData()
+        VariableList.UserName = PlayerName.GetUserName()
         for DayCounter in range(0,7):
             print "Day: " + str(DayCounter+1)
             TimeCheck = TimeofDay()
